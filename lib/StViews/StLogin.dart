@@ -85,13 +85,13 @@ class _LoginPageState extends State<LoginPage> {
                     onFieldSubmitted: (_) => _tryLogin(),
                   ),
 
-                  const SizedBox(height: 30),
+                  const SizedBox(height: 50),
                   SizedBox(
                     width: double.infinity,
                     height: 48,
                     child: ElevatedButton(
                       onPressed: auth.loading ? null : _tryLogin,
-                      style: ElevatedButton.styleFrom(backgroundColor: Colors.black),
+                      style: ElevatedButton.styleFrom(backgroundColor: Colors.indigo.shade900),
                       child: auth.loading
                           ? const CircularProgressIndicator(color: Colors.white)
                           : const Text(

@@ -11,86 +11,114 @@ class AttendancePage extends StatefulWidget {
 }
 
 class _AttendancePageState extends State<AttendancePage> {
-  DateTime _selectedDate = DateTime.now();
+  DateTime _focusedDay = DateTime.now();
+  DateTime? _selectedDate;
+  bool _loading = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadMonth(_focusedDay);
+  }
+
+  Future<void> _loadMonth(DateTime month) async {
+    setState(() => _loading = true);
+    await context.read<AttendanceProvider>().loadAttendanceForMonth(month);
+    setState(() => _loading = false);
+  }
 
   @override
   Widget build(BuildContext context) {
-    final attendanceProvider = context.watch<AttendanceProvider>();
-    final periods = attendanceProvider.attendanceForDate(_selectedDate);
+    final provider = context.watch<AttendanceProvider>();
+    final today = DateTime.now();
+    final selected = _selectedDate ?? _focusedDay;
+    final periods = provider.attendanceForDate(selected);
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Attendance'),
-      ),
-      body: Column(
-        children: [
-          TableCalendar(
-            firstDay: DateTime(DateTime.now().year, DateTime.now().month - 1, 1),
-            lastDay: DateTime(DateTime.now().year, DateTime.now().month + 1, 31),
-            focusedDay: _selectedDate,
-            selectedDayPredicate: (day) =>
-                isSameDay(day, _selectedDate),
-            onDaySelected: (selectedDay, focusedDay) {
-              setState(() {
-                _selectedDate = selectedDay;
-              });
-            },
-            calendarBuilders: CalendarBuilders(
-              defaultBuilder: (context, date, _) {
-                final attendance =
-                attendanceProvider.attendanceForDate(date);
-                if (attendance.isEmpty) {
-                  return Center(child: Text('${date.day}'));
-                } else {
-                  final presentCount =
-                      attendance.where((a) => a.present).length;
-                  final absentCount = attendance.length - presentCount;
-                  final color = presentCount >= absentCount
-                      ? Colors.green.withOpacity(0.4)
-                      : Colors.red.withOpacity(0.4);
-                  return Container(
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: color,
-                    ),
-                    margin: const EdgeInsets.all(6.0),
-                    alignment: Alignment.center,
-                    child: Text('${date.day}'),
-                  );
-                }
-              },
+      appBar: AppBar(title: const Text('Attendance')),
+      body: SafeArea(
+        child: Column(
+          children: [
+            if (_loading) const LinearProgressIndicator(),
+
+            // Fixed-height calendar
+            SizedBox(
+              height: 350,
+              child: TableCalendar<PeriodAttendance>(
+                firstDay: DateTime(today.year, today.month - 12, 1),
+                lastDay: today,
+                focusedDay: _focusedDay.isAfter(today) ? today : _focusedDay,
+                selectedDayPredicate: (d) => isSameDay(d, _selectedDate),
+                onDaySelected: (sel, foc) {
+                  if (sel.isAfter(today)) return;
+                  setState(() {
+                    _selectedDate = sel;
+                    _focusedDay = foc;
+                  });
+                },
+                onPageChanged: (foc) async {
+                  if (foc.isAfter(today)) return;
+                  setState(() {
+                    _focusedDay = foc;
+                    _selectedDate ??= foc;
+                  });
+                  await _loadMonth(foc);
+                },
+                eventLoader: provider.attendanceForDate,
+                calendarBuilders: CalendarBuilders(
+                  markerBuilder: (ctx, date, events) {
+                    if (date.isAfter(today) || events.isEmpty) return null;
+                    final present = events.where((e) => e.present).length;
+                    final absent = events.length - present;
+                    final color = present >= absent
+                        ? Colors.green.withOpacity(0.4)
+                        : Colors.red.withOpacity(0.4);
+                    return Container(
+                      margin: const EdgeInsets.all(6),
+                      decoration: BoxDecoration(shape: BoxShape.circle, color: color),
+                      alignment: Alignment.center,
+                      child: Text('${date.day}', style: const TextStyle(color: Colors.white)),
+                    );
+                  },
+                ),
+              ),
             ),
-          ),
-          const Divider(),
-          Expanded(
-            child: periods.isEmpty
-                ? Center(
-              child: Text(
-                  "No attendance data for ${DateFormat('EEE, MMM d, y').format(_selectedDate)}"),
-            )
-                : ListView.builder(
-              itemCount: periods.length,
-              itemBuilder: (context, index) {
-                final p = periods[index];
-                return Card(
-                  margin:
-                  const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                  child: ListTile(
-                    title: Text(p.periodName),
-                    subtitle: Text('${p.hours} hour(s)'),
-                    trailing: Text(
-                      p.present ? 'Present' : 'Absent',
-                      style: TextStyle(
-                        color: p.present ? Colors.green : Colors.red,
-                        fontWeight: FontWeight.bold,
+
+            const Divider(),
+
+            // Flexible attendance list below
+            Expanded(
+              child: periods.isEmpty
+                  ? Center(
+                child: Text(
+                  "No data for ${DateFormat('EEE, MMM d, y').format(selected)}",
+                  textAlign: TextAlign.center,
+                ),
+              )
+                  : ListView.builder(
+                padding: const EdgeInsets.only(bottom: 20),
+                itemCount: periods.length,
+                itemBuilder: (_, i) {
+                  final p = periods[i];
+                  return Card(
+                    margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                    child: ListTile(
+                      title: Text(p.periodName),
+                      subtitle: Text('${p.hours} hour(s)'),
+                      trailing: Text(
+                        p.present ? 'Present' : 'Absent',
+                        style: TextStyle(
+                          color: p.present ? Colors.green : Colors.red,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
-                  ),
-                );
-              },
+                  );
+                },
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

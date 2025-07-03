@@ -78,7 +78,9 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget build(BuildContext context) {
     final auth = context.watch<AuthProvider>();
     return Scaffold(
-      appBar: AppBar(title: const Text('Profile & Settings')),
+      appBar: AppBar(
+          title: const Text('Profile')
+      ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: Column(children: [
@@ -102,7 +104,7 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
             ),
           ]),
-          const SizedBox(height: 24),
+          const SizedBox(height: 25),
           Form(
             key: _formKey,
             child: Column(children: [
@@ -112,7 +114,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 const InputDecoration(hintText: 'Enter your name'),
                 validator: (v) => v?.isEmpty == true ? 'Enter name' : null,
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: 25),
               TextFormField(
                 controller: _emailCtrl,
                 decoration:
@@ -124,7 +126,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   return regex.hasMatch(v) ? null : 'Enter valid email';
                 },
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: 25),
               TextFormField(
                 controller: _phoneCtrl,
                 decoration:
@@ -137,34 +139,36 @@ class _ProfilePageState extends State<ProfilePage> {
                       : 'Enter 10-digit phone';
                 },
               ),
-              const SizedBox(height: 24),
-              SizedBox(
-                width: double.infinity,
-                height: 48,
-                child: ElevatedButton.icon(
-                  onPressed: _saveProfile,
-                  icon: const Icon(Icons.save),
-                  label:
-                  const Text('Save Profile', style: TextStyle(fontSize: 18)),
-                ),
-              ),
-              const SizedBox(height: 40),
+              const SizedBox(height: 80),
               SizedBox(
                 width: double.infinity,
                 height: 48,
                 child: ElevatedButton.icon(
                   style:
-                  ElevatedButton.styleFrom(backgroundColor: Colors.redAccent),
-                  icon: const Icon(Icons.logout),
+                  ElevatedButton.styleFrom(backgroundColor: Colors.indigo.shade900),
+                  onPressed: _saveProfile,
+                  icon: const Icon(Icons.save,color: Colors.white,),
                   label:
-                  const Text('Logout', style: TextStyle(fontSize: 18)),
-                  onPressed: () {
-                    auth.logout();
-                    Navigator.pushNamedAndRemoveUntil(
-                        context, '/login', (r) => false);
-                  },
+                  const Text('Save Profile', style: TextStyle(fontSize: 18, color: Colors.white)),
                 ),
               ),
+              // const SizedBox(height: 40),
+              // SizedBox(
+              //   width: double.infinity,
+              //   height: 48,
+              //   child: ElevatedButton.icon(
+              //     style:
+              //     ElevatedButton.styleFrom(backgroundColor: Colors.indigo.shade900),
+              //     icon: const Icon(Icons.logout),
+              //     label:
+              //     const Text('Logout', style: TextStyle(fontSize: 18)),
+              //     onPressed: () {
+              //       auth.logout();
+              //       Navigator.pushNamedAndRemoveUntil(
+              //           context, '/login', (r) => false);
+              //     },
+              //   ),
+              // ),
             ]),
           ),
         ]),
