@@ -35,7 +35,9 @@ class _AttendancePageState extends State<AttendancePage> {
     final periods = provider.attendanceForDate(selected);
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Attendance')),
+      appBar: AppBar(
+          backgroundColor: Colors.indigo,
+          title: const Text('Attendance',style: TextStyle(color: Colors.white),)),
       body: SafeArea(
         child: Column(
           children: [

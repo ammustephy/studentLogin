@@ -9,6 +9,7 @@ import 'package:student/StProvider/StAttendance_Provider.dart';
 import 'package:student/StProvider/StAuthentication_Provider.dart';
 import 'package:student/StProvider/StNews_Provider.dart';
 import 'package:student/StViews/StAttendance.dart';
+import 'package:student/StViews/StBusDetails.dart';
 import 'package:student/StViews/StExamResults.dart';
 import 'package:student/StViews/StHome.dart' hide AuthProvider, NewsProvider;
 import 'package:student/StViews/StLogin.dart';
@@ -54,11 +55,12 @@ class MyApp extends StatelessWidget {
           '/attendance': (_) => const AttendancePage(),
           '/notifications': (_) => const NotificationsPage(),
           '/exam_results': (_) => const ExamResultsPage(),
-          '/marklist': (_) => const MarklistPage(),
-          '/syllabus': (_) => const SyllabusPage(),
+          '/marklist': (_) =>  MarklistPage(),
+          '/syllabus': (_) =>  SyllabusPage(),
           '/notes': (_) => const NotesPage(),
           '/online_classroom': (_) => const OnlineClassroomPage(),
           '/profile': (_) => const ProfilePage(),
+          '/bus': (_) => const BusListPage(),
           '/payments': (_) => const OnlinePaymentPage(),
         },
       ),

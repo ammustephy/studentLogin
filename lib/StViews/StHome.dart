@@ -35,12 +35,22 @@ class _HomePageState extends State<HomePage> {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.indigo.shade50.withOpacity(0.8),
+        backgroundColor: Colors.indigo,
         elevation: 0,
-        title: Text('Hi, $student',
-            style: TextStyle(color: Colors.indigo.shade900, fontWeight: FontWeight.bold)),
+        title: Text(
+          'Hi, $student',
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 20,
+            // fontWeight: FontWeight.bold,
+          ),
+        ),
         actions: [
-          IconButton(icon: const Icon(Icons.logout), color: Colors.indigo, onPressed: auth.logout),
+          IconButton(
+            icon: const Icon(Icons.logout,size: 20,),
+            color: Colors.white,
+            onPressed: auth.logout,
+          ),
         ],
       ),
       body: _pageWidgets[_selectedIndex],
@@ -59,23 +69,19 @@ class _HomePageState extends State<HomePage> {
   }
 }
 
-
-
-
 class HomeContent extends StatelessWidget {
   const HomeContent({Key? key}) : super(key: key);
 
   static final features = [
-    _FeatureCard('Attendance', 'assets/attendance.png', '/attendance'),
-    _FeatureCard('Notifications', 'assets/notifications.png', '/notifications'),
-    _FeatureCard('Exam Results', 'assets/exam_results.png', '/exam_results'),
-    _FeatureCard('Marklist', 'assets/marklist.png', '/marklist'),
-    _FeatureCard('Syllabus', 'assets/syllabus.png', '/syllabus'),
-    _FeatureCard('Notes', 'assets/notes.png', '/notes'),
-    _FeatureCard('Online Classroom', 'assets/online_classroom.png', '/online_classroom'),
-    _FeatureCard('Profile', 'assets/profile.png', '/profile'),
-    _FeatureCard('Payments', 'assets/payments.png', '/payments'),
-    // _FeatureCard('Settings', 'assets/payments.png', '/settings')
+    _FeatureCard('Attendance', 'assets/images/attendances.png', '/attendance'),
+    _FeatureCard('Notifications', 'assets/images/notification.png', '/notifications'),
+    _FeatureCard('Exam Results', 'assets/images/ExamResult.png', '/exam_results'),
+    _FeatureCard('Marklist', 'assets/images/Marklist.png', '/marklist'),
+    _FeatureCard('Syllabus', 'assets/images/book.png', '/syllabus'),
+    _FeatureCard('Notes', 'assets/images/Notes.png', '/notes'),
+    _FeatureCard('Online Classroom', 'assets/images/OnlineClass.png', '/online_classroom'),
+    _FeatureCard('Bus', 'assets/images/SchoolBus.png', '/bus'),
+    _FeatureCard('Payments', 'assets/images/OnlinePayments.png', '/payments'),
   ];
 
   @override
@@ -93,33 +99,33 @@ class HomeContent extends StatelessWidget {
       child: SafeArea(
         child: Column(
           children: [
-            // News carousel
+            // 📢 News carousel
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 16.0),
               child: CarouselSlider.builder(
                 itemCount: news.length,
-                itemBuilder: (ctx, idx, real) {
-                  return Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 8),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(16),
-                      gradient: LinearGradient(
-                        colors: [
-                          Colors.indigo.shade200.withOpacity(0.8),
-                          Colors.indigo.shade100.withOpacity(0.6)
-                        ],
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                      ),
-                      boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 8, offset: Offset(0, 4))],
+                itemBuilder: (ctx, idx, real) => Container(
+                  margin: const EdgeInsets.symmetric(horizontal: 8),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(16),
+                    gradient: LinearGradient(
+                      colors: [
+                        Colors.indigo.shade200.withOpacity(0.8),
+                        Colors.indigo.shade100.withOpacity(0.6),
+                      ],
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
                     ),
-                    padding: const EdgeInsets.all(20),
-                    alignment: Alignment.center,
-                    child: Text(news[idx],
-                        textAlign: TextAlign.center,
-                        style: TextStyle(color: Colors.indigo.shade900, fontSize: 18, fontWeight: FontWeight.w600)),
-                  );
-                },
+                    boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 8, offset: Offset(0, 4))],
+                  ),
+                  padding: const EdgeInsets.all(20),
+                  alignment: Alignment.center,
+                  child: Text(
+                    news[idx],
+                    textAlign: TextAlign.center,
+                    style: TextStyle(color: Colors.indigo.shade900, fontSize: 18, fontWeight: FontWeight.w600),
+                  ),
+                ),
                 options: CarouselOptions(
                   height: 150,
                   autoPlay: true,
@@ -130,7 +136,8 @@ class HomeContent extends StatelessWidget {
                 ),
               ),
             ),
-            // Animated Grid
+
+            // 🔲 Animated Grid
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 12),
@@ -169,13 +176,16 @@ class HomeContent extends StatelessWidget {
                                         f.iconAsset,
                                         fit: BoxFit.contain,
                                         errorBuilder: (_, __, ___) =>
-                                            Icon(Icons.school, size: 40, color: Colors.indigo.shade700),
+                                            Icon(Icons.school, size: 20, color: Colors.indigo.shade700),
+                                        height: 40,width: 45,
                                       ),
                                     ),
                                     const SizedBox(height: 8),
-                                    Text(f.title,
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(fontWeight: FontWeight.w600, color: Colors.indigo.shade700)),
+                                    Text(
+                                      f.title,
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(fontWeight: FontWeight.w600, color: Colors.indigo.shade700),
+                                    ),
                                   ],
                                 ),
                               ),
@@ -196,6 +206,8 @@ class HomeContent extends StatelessWidget {
 }
 
 class _FeatureCard {
-  final String title, iconAsset, routeName;
+  final String title;
+  final String iconAsset;
+  final String routeName;
   const _FeatureCard(this.title, this.iconAsset, this.routeName);
 }

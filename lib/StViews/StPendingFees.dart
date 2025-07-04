@@ -1,34 +1,40 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 
 class PendingFeeDetailPage extends StatelessWidget {
   final Map<String, dynamic> fee;
-  final String category;
-  const PendingFeeDetailPage(this.fee, this.category, {Key? key}) : super(key: key);
+  const PendingFeeDetailPage({Key? key, required this.fee}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final due = DateFormat('dd MMM yyyy').format(DateTime.parse(fee['dueDate']));
     return Scaffold(
-      appBar: AppBar(title: Text('$category - Pending Details')),
+      appBar: AppBar(
+          backgroundColor: Colors.indigo,
+          title: const Text('Pending Fee Details',style: TextStyle(color: Colors.white),)),
       body: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text('Amount Due: ₹${fee['amount']}', style: const TextStyle(fontSize: 18)),
-            const SizedBox(height: 8),
-            Text('Due Date: $due', style: const TextStyle(fontSize: 16)),
-            const SizedBox(height: 16),
-            ElevatedButton(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+        Text('Due Date: ${fee['dueDate']}', style: const TextStyle(fontSize: 16)),
+        const SizedBox(height: 8),
+              Text(
+                'Amount: ${fee['amount'].toStringAsFixed(2)}',
+                style: const TextStyle(fontSize: 16),
+              ),
+              SizedBox(height: 80,),
+          Center(
+            child: ElevatedButton(
+              style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all<Color>(Colors.indigo),),
+              child: const Text('Pay Online',style: TextStyle(color: Colors.white),),
               onPressed: () {
-                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Starting payment…')));
+                // TODO: implement payment flow
               },
-              child: const Text('Pay Online'),
             ),
+          ),
           ],
         ),
       ),
     );
+    }
   }
-}

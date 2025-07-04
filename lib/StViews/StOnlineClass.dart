@@ -7,8 +7,8 @@ class OnlineClassroomPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Online Classroom',style: TextStyle(color: Colors.white),),
         backgroundColor: Colors.indigo,
+        title: const Text('Online Classroom',style: TextStyle(color: Colors.white),),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16),
