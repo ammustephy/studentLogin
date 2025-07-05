@@ -80,7 +80,7 @@ class ExamDetailPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(examType),
+        title: Text(examType,style: TextStyle(color: Colors.white),),
         backgroundColor: Colors.indigo,
       ),
       body: ListView.separated(
@@ -96,7 +96,7 @@ class ExamDetailPage extends StatelessWidget {
             subtitle: Text('Score: ${result['score']} — Grade: ${result['grade']}'),
             trailing: ElevatedButton(
               style: ElevatedButton.styleFrom(backgroundColor: Colors.indigo),
-              child: const Text('View'),
+              child: const Text('View',style: TextStyle(color: Colors.white),),
               onPressed: () {
                 showDialog(
                   context: context,
