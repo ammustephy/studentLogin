@@ -1,27 +1,21 @@
-
-// Put appropriate icons or images in the assets folder.
-
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:student/StProvider/StAttendance_Provider.dart';
 import 'package:student/StProvider/StAuthentication_Provider.dart';
 import 'package:student/StProvider/StNews_Provider.dart';
 import 'package:student/StViews/StAttendance.dart';
 import 'package:student/StViews/StBusDetails.dart';
 import 'package:student/StViews/StExamResults.dart';
-import 'package:student/StViews/StHome.dart' hide AuthProvider, NewsProvider;
+import 'package:student/StViews/StHome.dart';
 import 'package:student/StViews/StLogin.dart';
 import 'package:student/StViews/StMarklist.dart';
 import 'package:student/StViews/StNotes.dart';
 import 'package:student/StViews/StNotifications.dart';
 import 'package:student/StViews/StOnlineClass.dart';
 import 'package:student/StViews/StPayments.dart';
-import 'package:student/StViews/StProfile.dart' hide AttendancePage;
+import 'package:student/StViews/StProfile.dart';
 import 'package:student/StViews/StSyllabus.dart';
-import 'package:table_calendar/table_calendar.dart';
-import 'package:intl/intl.dart';
 
 // Entry Point
 void main() {
